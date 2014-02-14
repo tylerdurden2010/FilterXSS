@@ -1,0 +1,31 @@
+<a href="#" onclick="popUp('/HelloWorld/Hello.do?username=u'); return false;">Example<a>
+<script>document.writeln("test");</script>
+<input type="button" value="ShowAlert" onclick="alert('test');">
+
+<script>
+function GoBackURL()
+{
+    var link = "test";
+    location.href=link;
+}
+</script>
+<input type="button" value="Back" onclick=GoBackURL()> 
+
+<script> 
+function clickme()
+{
+    document.writeln(" test ");
+}
+</script>
+<input type="button" value="ClickMe" onclick="clickme();">
+
+<div>test</div>
+<script>
+function test()
+{ 
+   var str = document.getElementById("text").value;  
+   document.getElementById("t").innerHTML =str;    
+}
+</script>
+<div id="t" ></div>
+<input type="text" id="text" value="test" /><input type="button" id="s" value="write" onclick="test()"/>

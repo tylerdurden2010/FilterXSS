@@ -1,0 +1,189 @@
+<html>
+<head></head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="./resources/css/ext-all-gray.css"/>
+<script type="text/javascript" src="./bootstrap.js"></script>
+<script type="text/javascript" src="./locale/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" >
+Ext.onReady(function()
+{
+	
+	var hello = new Ext.form.Panel
+	(	{
+		name: "xsstest",
+ 		frame: true,
+ 		renderTo: test,
+ 		items:
+ 			[{
+ 				fieldLabel: 'name',
+ 				padding: 0,
+ 				width: 500,
+ 				height: 500,
+ 				xtype: 'textfield',
+ 				name: 'productName'
+ 			}],
+		buttons:
+			[{
+				text: 'Load Something',
+				handler: addSomething	
+ 			}]
+	
+	});
+
+	function addSomething()
+	{
+		var myVal = hello.getForm().findField('productName');
+		var str = myVal.getValue();
+        str = Ext.util.Format.htmlEncode(str);
+		//str = Ext.util.Format.htmlEncode(str);
+//		Ext.DomHelper.insertHtml("afterEnd",document.getElementById("div2"),"<script>alert(1);")
+		Ext.DomHelper.insertHtml("beforeEnd",document.getElementById("div2"),str);
+		//Ext.core.DomHelper.overwrite(document.getElementById("div2"),str);
+		//Ext.core.DomHelper.append(Ext.get("div2"),str,true);
+		var test = document.location.href;
+		Ext.core.DomHelper.overwrite(document.getElementById("div3"),test);
+	
+
+
+	}
+	
+	
+	
+// 	var panel = new Ext.Panel
+// 	({
+		
+// 		title: 'exam',
+// 		renderTo: 'sub1',
+// 		buttons: 
+// 		[{
+// 			text: 'clickme',
+// 			handler: function()
+// 			{
+// 				Ext.core.DomHelper.overwrite(document.getElementById("div1"),"instead");
+// 			}
+// 		}],
+// 		html: '<div style="height: 160px;padding:5px;"><div id="div1">origen</div></div>'
+// 		});
+	
+	
+	
+// Ext.create('Ext.form.Panel',
+// 		{
+// 			title: 'ext exapmple',
+// 			width: 200,
+// 			frame: true,
+// 			renderTo: Ext.getBody(),
+// 			bodyPadding: 5,
+// 			items: 
+// 				[{
+// 					fieldLabel: 'show char',
+// 					xtype: 'displayfield',
+// 					value: 'fdsafdsa',
+// 					labelWidth: 70,
+// 					labelSeparator: ':      '
+// 				}]
+	
+// 		});	
+
+	
+	
+//Ext.QuickTips.init();
+// var form=new Ext.form.Panel
+// ({
+// 	title: 'form',
+// 	frame: true,
+// 	width: 200,	
+// 	height: 120,
+// 	renderTo: 'form',
+// 	defaults: 
+// 	{k
+// 		labelSeparator: ':',
+// 		labelWidth: 50,
+// 		width: 150,
+// 		allowBlank: false,
+// 		blankText: 'no empty',
+// 		labelAlign: 'left',
+// 		msgTarget: 'errorMsg'
+		
+// 	},
+// 	items: 
+// 		[{
+// 			xtype: 'textfield',
+// 			fieldLabel: 'name'
+// 		 },
+// 		 {
+// 			 xtype: 'numberfield',
+// 			 fieldLabel: 'age'
+			
+// 		}]
+// });
+	
+	
+//Ext.MessageBox.prompt('notice','click',callBack);
+//function callBack(id,msg)
+//{
+   // alert('id'+'\n'+msg);
+//}
+// var msgBox = Ext.MessageBox.show
+// ({
+//     title: 'notice',
+//     width: 800,
+//     msg: 'three button',
+//     modal: false,
+//     progress: true,
+//     //prompt: true,
+//     //value: 'inputing',
+//     fn: function()
+//     {
+//     	Ext.TaskManager.stop(task);
+//     },
+//     buttons: Ext.Msg.OK,
+//     icon: Ext.Msg.WARNING
+// })
+// var count = 0;
+// var percentage = 0;
+// var progressText='';
+
+
+// var task = 
+// {
+		
+// 	run: function()
+// 	{
+// 		count++;
+// 		percentage = count/10;
+// 		progressText = 'loading...' + percentage*100+"%";
+		
+// 		//msgBox.updateText('timeing click:' + Ext.util.Format.date(new Date(), 'Y-m-d g:i:s A'));
+// 		msgBox.updateProgress(percentage,progressText);
+// 		if(10 < count)
+// 		{
+// 			Ext.TaskManager.stop(task);
+// 			msgBox.hide();
+			
+// 		}
+// 	},
+// 	interval: 500
+// }
+// Ext.TaskManager.start(task);
+
+// function callBack(id,msg)
+// {
+//     alert(id+'\n'+msg);
+// }
+
+
+
+
+});
+</script>
+<body>
+<div>
+<div id="test"></div>
+
+<div id='div2'></div> 
+<div></div>
+<div id='div3'></div>
+</div>
+</body>
+</html>

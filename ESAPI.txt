@@ -1,0 +1,88 @@
+如何合理的使用ESAPI对恶意提交进行过滤
+
+几个ESAPI函数
+
+ESAPI.encoder().encodeForHTML()
+ESAPI.encoder().encodeForJavaScript()
+ESAPIencoder().encodeForURL
+
+XSS
+1、检查输入点的过滤且编码
+URL编码
+HTML编码
+JavaScript编码
+
+2.2
+编码的绕过
+只是用javascript过滤
+	    second = ESAPI.encoder().encodeForJavaScript(another);
+
+	    out.println("<script> document.writeln(\""+ second+"\");</script>");
+<script>
+document.writeln("\x3Cscript\x3Ealert\x281\x29\x3B\x3C\x2Fscript\x3E");
+</script>
+
+\x3Cscript\x3Ealert\x281\x29\x3B\x3C\x2Fscript\x3E
+
+2.2
+
+<input type="button" value="ShowAlert" onclick="alert('&#x27;&#x29;&#x3b;alert&#x28;&#x27;hacked by xxx');">
+
+如果只是用html的过滤
+
+首先浏览器遇见HTML标签，会先进行html的解码。
+所以
+<input type="button" onclick="alert('');alert('hacked by xxx');" value="ShowAlert">
+接着
+onclick会进行js解码。此时执行成功
+
+如果先html过滤，再javascript过滤，会导致输出不正常。
+
+2.3 如果过滤顺序不对，还可能导致攻击
+<input type="button" onclick="document.write('参数值')" value="ClickMe">
+
+先html
+接着onclick后javascript
+在document.write时，会插入进html里面，所以还需要html解码
+
+	    second = ESAPI.encoder().encodeForJavaScript(another); 
+	    second = ESAPI.encoder().encodeForHTML(second);
+
+
+
+2.4
+<script>
+function GoBackURL()
+{
+    var link = "参数";
+    location.href=link;
+ }
+ </script>
+<input type="button" value="Back" onclick=GoBackURL()> 
+
+
+首先会进行script的解析，接着会触发URL链接的解析。
+
+小测试
+<script>
+function test(){ var str = document.getElementById("text").value; document.getElementById("t").innerHTML =str; }
+</script>
+<div id="t"></div>
+<input id="text" type="text" value="test">
+<input id="s" type="button" onclick="test()" value="write">
+
+3 基于返回的检测
+jsoup
+http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer
+http://jsoup.org/apidocs/org/jsoup/safety/Whitelist.html#basicWithImages%28%29
+import org.jsoup.*;
+import org.jsoup.safety.Whitelist;
+test = Jsoup.clean(another, Whitelist.basic());
+
+<script>
+function test(){ var str = document.getElementById("text").value; document.getElementById("t").innerHTML =str; }
+</script>
+<div id="t"></div>
+<input id="text" type="text" value="test">
+<input id="s" type="button" onclick="test()" value="write">
+
